@@ -1,0 +1,5 @@
+﻿src/auth/auth.controller.ts(27,47): error TS1272: A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.
+src/auth/auth.controller.ts(43,56): error TS1272: A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.
+src/expenses/dto/update-expense.dto.ts(1,29): error TS2307: Cannot find module '@nestjs/mapped-types' or its corresponding type declarations.
+src/main.ts(9,11): error TS2349: This expression is not callable.
+  Type 'typeof cookieParser' has no call signatures.
