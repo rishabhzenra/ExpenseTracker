@@ -19,6 +19,24 @@ export class User {
     @Column()
     password: string;
 
+    @Column({ nullable: true })
+    name: string;
+
+    @Column({ default: false })
+    isVerified: boolean;
+
+    @Column({ nullable: true })
+    otp: string;
+
+    @Column({ type: 'timestamp', nullable: true })
+    otpExpires: Date;
+
+    @Column({ default: true })
+    is2FAEnabled: boolean;
+
+    @Column({ type: 'simple-array', nullable: true })
+    badges: string[];
+
     @CreateDateColumn()
     createdAt: Date;
 

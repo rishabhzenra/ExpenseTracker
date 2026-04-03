@@ -25,4 +25,17 @@ export class UsersService {
         });
         return this.usersRepository.save(user);
     }
+
+    async updateOtp(userId: string, otp: string | undefined, expires: Date | undefined): Promise<void> {
+        await this.usersRepository.update(userId, { otp, otpExpires: expires });
+    }
+
+    async verifyUser(userId: string): Promise<void> {
+        await this.usersRepository.update(userId, { isVerified: true, otp: undefined, otpExpires: undefined });
+    }
+
+    async updateProfile(userId: string, data: { name?: string }): Promise<User | null> {
+        await this.usersRepository.update(userId, data);
+        return this.findById(userId);
+    }
 }

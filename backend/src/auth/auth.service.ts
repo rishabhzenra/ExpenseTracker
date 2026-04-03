@@ -2,6 +2,7 @@ import {
     Injectable,
     ConflictException,
     UnauthorizedException,
+    BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -24,9 +25,17 @@ export class AuthService {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(signupDto.password, salt);
+        // Create user and mark as verified immediately
         const user = await this.usersService.create(signupDto.email, hashedPassword);
+        await this.usersService.verifyUser(user.id);
+        if (signupDto.name) {
+            await this.usersService.updateProfile(user.id, { name: signupDto.name });
+        }
 
-        return { id: user.id, email: user.email };
+        const payload = { sub: user.id, email: user.email };
+        const token = this.jwtService.sign(payload);
+
+        return { token, user: { id: user.id, email: user.email, name: signupDto.name } };
     }
 
     async login(loginDto: LoginDto) {

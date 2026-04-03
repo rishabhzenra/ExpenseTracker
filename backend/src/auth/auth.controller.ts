@@ -16,8 +16,20 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @Post('signup')
-    async signup(@Body() signupDto: SignupDto) {
-        return this.authService.signup(signupDto);
+    async signup(
+        @Body() signupDto: SignupDto,
+        @Res({ passthrough: true }) response: Response,
+    ) {
+        const result = await this.authService.signup(signupDto);
+
+        response.cookie('access_token', result.token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+
+        return { user: result.user };
     }
 
     @Post('login')
@@ -30,8 +42,8 @@ export class AuthController {
 
         response.cookie('access_token', result.token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            secure: true,
+            sameSite: 'none',
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
@@ -43,8 +55,8 @@ export class AuthController {
     async logout(@Res({ passthrough: true }) response: Response) {
         response.clearCookie('access_token', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            secure: true,
+            sameSite: 'none',
         });
 
         return { message: 'Logged out successfully' };

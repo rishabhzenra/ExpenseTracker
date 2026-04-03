@@ -7,40 +7,34 @@ import {
     JoinColumn,
 } from 'typeorm';
 import { User } from '../users/user.entity';
-import { ExpenseCategory } from './expense-category.enum';
+import { IncomeCategory } from './income-category.enum';
 
-@Entity('expenses')
-export class Expense {
+@Entity('incomes')
+export class Income {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column()
     userId: string;
 
-    @ManyToOne(() => User, (user) => user.expenses, { onDelete: 'CASCADE' })
+    @ManyToOne(() => User, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     user: User;
 
     @Column('decimal', { precision: 10, scale: 2 })
     amount: number;
 
-    @Column({ type: 'enum', enum: ExpenseCategory })
-    category: ExpenseCategory;
-
-    @Column({ default: false })
-    isNecessary: boolean;
+    @Column({ type: 'enum', enum: IncomeCategory })
+    category: IncomeCategory;
 
     @Column({ nullable: true, type: 'text' })
     notes: string;
 
     @Column({ nullable: true })
-    merchant: string;
+    source: string;
 
     @Column({ default: false })
     isRecurring: boolean;
-
-    @Column({ default: false })
-    isTaxDeductible: boolean;
 
     @Column({ type: 'date' })
     date: string;
