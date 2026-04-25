@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Savora — Project Introduction</title>
+<style>
+  /* ── Reset & Base ──────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:    #2563EB;
+    --green:   #059669;
+    --red:     #DC2626;
+    --amber:   #D97706;
+    --slate50: #F8FAFC;
+    --slate100:#F1F5F9;
+    --slate200:#E2E8F0;
+    --slate400:#94A3B8;
+    --slate500:#64748B;
+    --slate700:#334155;
+    --slate900:#0F172A;
+    --radius:  10px;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--slate900);
+    background: #fff;
+    line-height: 1.6;
+    font-size: 13.5px;
+  }
+
+  /* ── Layout ────────────────────────────────────────────── */
+  .page { max-width: 900px; margin: 0 auto; padding: 48px 48px 64px; }
+
+  /* ── Cover / Hero ──────────────────────────────────────── */
+  .cover {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563EB 55%, #0891b2 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 52px 48px 44px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .cover h1 {
+    font-size: 46px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .cover-sub {
+    font-size: 17px;
+    opacity: .85;
+    max-width: 500px;
+    line-height: 1.5;
+    margin-bottom: 32px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    opacity: .8;
+  }
+  .cover-meta span { display: flex; align-items: center; gap: 6px; }
+  .cover-meta b { opacity: 1; font-weight: 700; color: #fff; }
+
+  /* ── Section headers ───────────────────────────────────── */
+  .section { margin-bottom: 36px; }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--slate900);
+    border-left: 4px solid var(--blue);
+    padding-left: 12px;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .sub-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--slate700);
+    margin: 16px 0 8px;
+  }
+
+  /* ── Card & Grid ───────────────────────────────────────── */
+  .card {
+    background: var(--slate50);
+    border: 1px solid var(--slate200);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* ── Stack pills ───────────────────────────────────────── */
+  .pill-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .pill {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    color: var(--blue);
+    font-size: 11.5px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 3px 12px;
+  }
+  .pill.green { background:#ECFDF5; border-color:#A7F3D0; color:var(--green); }
+  .pill.slate { background:var(--slate100); border-color:var(--slate200); color:var(--slate700); }
+  .pill.amber { background:#FFFBEB; border-color:#FDE68A; color:var(--amber); }
+
+  /* ── Feature cards ─────────────────────────────────────── */
+  .feat-card {
+    border: 1px solid var(--slate200);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    background: #fff;
+  }
+  .feat-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .feat-title { font-size: 13.5px; font-weight: 700; color: var(--slate900); margin-bottom: 5px; }
+  .feat-desc  { font-size: 12px; color: var(--slate500); line-height: 1.5; }
+
+  /* ── Route table ───────────────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th {
+    text-align: left;
+    padding: 9px 12px;
+    background: var(--slate100);
+    color: var(--slate700);
+    font-weight: 700;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--slate100); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .route { font-family: 'Consolas', 'Courier New', monospace; color: var(--blue); font-size: 12px; }
+  .badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 2px 7px;
+  }
+  .badge-get  { background:#DBEAFE; color:#1D4ED8; }
+  .badge-post { background:#D1FAE5; color:#047857; }
+  .badge-put  { background:#FEF3C7; color:#92400E; }
+  .badge-del  { background:#FEE2E2; color:#991B1B; }
+
+  /* ── Architecture diagram ──────────────────────────────── */
+  .arch {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border: 1px solid var(--slate200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    font-size: 12.5px;
+  }
+  .arch-box {
+    flex: 1;
+    padding: 20px 18px;
+    text-align: center;
+  }
+  .arch-box h4 { font-weight: 700; margin-bottom: 6px; font-size: 13px; }
+  .arch-box ul { list-style: none; color: var(--slate500); font-size: 11.5px; line-height: 1.9; }
+  .arch-sep {
+    width: 2px;
+    background: var(--slate200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--slate400);
+    font-size: 18px;
+    writing-mode: vertical-rl;
+  }
+  .arch-box.frontend { background: #EFF6FF; }
+  .arch-box.backend  { background: #ECFDF5; }
+  .arch-box.db       { background: #FFF7ED; }
+
+  /* ── Demo data ─────────────────────────────────────────── */
+  .demo-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--slate100);
+  }
+  .demo-item:last-child { border-bottom: none; }
+  .demo-icon { font-size: 20px; width: 32px; text-align: center; flex-shrink: 0; }
+  .demo-text b { font-size: 13px; display: block; margin-bottom: 2px; }
+  .demo-text span { font-size: 12px; color: var(--slate500); }
+
+  /* ── Code block ────────────────────────────────────────── */
+  pre {
+    background: var(--slate900);
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  pre .cmt { color: #64748b; }
+  pre .key { color: #93c5fd; }
+  pre .val { color: #86efac; }
+  pre .str { color: #fca5a5; }
+
+  /* ── KPI strip ─────────────────────────────────────────── */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .kpi-card {
+    border: 1px solid var(--slate200);
+    border-radius: var(--radius);
+    padding: 16px 14px;
+    text-align: center;
+    background: #fff;
+  }
+  .kpi-num { font-size: 26px; font-weight: 800; line-height: 1.1; }
+  .kpi-label { font-size: 11px; color: var(--slate500); margin-top: 4px; }
+
+  /* ── Design colours ────────────────────────────────────── */
+  .swatch-row { display: flex; gap: 12px; margin-top: 12px; }
+  .swatch { border-radius: 8px; padding: 14px 16px; font-size: 12px; font-weight: 600; color: #fff; flex: 1; text-align: center; }
+
+  /* ── Footer ────────────────────────────────────────────── */
+  .footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 2px solid var(--slate200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--slate400);
+  }
+  .footer b { color: var(--slate700); }
+
+  p { margin-bottom: 10px; color: var(--slate700); }
+  ul.body-list { padding-left: 20px; color: var(--slate700); font-size: 13px; line-height: 1.9; }
+  ul.body-list li::marker { color: var(--blue); }
+
+  /* ── Print styles ──────────────────────────────────────── */
+  @media print {
+    body { font-size: 12.5px; }
+    .page { padding: 24px 32px 40px; }
+    .cover { border-radius: 10px; padding: 36px 36px 30px; }
+    .cover h1 { font-size: 38px; }
+    .no-break { page-break-inside: avoid; }
+    pre { font-size: 11px; }
+    @page { margin: 15mm 15mm 18mm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══════════════════════════════════════
+       COVER
+  ═══════════════════════════════════════ -->
+  <div class="cover">
+    <div class="cover-badge">College Project — Full Stack Web Application</div>
+    <h1>Savora</h1>
+    <p class="cover-sub">
+      A professional-grade personal finance &amp; business management platform —
+      track expenses, budget, invoices, taxes, and savings goals in one unified dashboard.
+    </p>
+    <div class="cover-meta">
+      <span><b>Developer:</b> Rishabh Joshi</span>
+      <span><b>Version:</b> 1.0.0</span>
+      <span><b>Type:</b> Full-Stack Web App</span>
+      <span><b>Database:</b> PostgreSQL (Neon Cloud)</span>
+      <span><b>Status:</b> Active Development</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       EXECUTIVE SUMMARY
+  ═══════════════════════════════════════ -->
+  <div class="section">
+    <h2 class="section-title">Executive Summary</h2>
+    <p>
+      <strong>Savora</strong> is a full-stack, cloud-ready personal finance application built as a college
+      capstone project. It goes far beyond a simple expense tracker — it is designed to serve both
+      individual users managing personal budgets and freelancers or small-business owners who need
+      CRM, invoicing, and tax-tracking capabilities under one roof.
+    </p>
+    <p>
+      The application features a polished, professional UI (white/light theme, Inter font, primary blue
+      palette), a RESTful NestJS API backend with JWT authentication, and a PostgreSQL database hosted
+      on Neon's serverless cloud platform. The frontend is built with Next.js 16, React 19, and
+      Tailwind CSS 4, making it fast, responsive, and component-driven.
+    </p>
+
+    <div class="kpi-strip">
+      <div class="kpi-card no-break">
+        <div class="kpi-num" style="color:#2563EB">15+</div>
+        <div class="kpi-label">Application Pages</div>
+      </div>
+      <div class="kpi-card no-break">
+        <div class="kpi-num" style="color:#059669">12</div>
+        <div class="kpi-label">Backend Modules</div>
+      </div>
+      <div class="kpi-card no-break">
+        <div class="kpi-num" style="color:#7C3AED">40+</div>
+        <div class="kpi-label">API Endpoints</div>
+      </div>
+      <div class="kpi-card no-break">
+        <div class="kpi-num" style="color:#D97706">2</div>
+        <div class="kpi-label">Deployment Targets</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       TECHNOLOGY STACK
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Technology Stack</h2>
+
+    <div class="arch">
+      <div class="arch-box frontend">
+        <h4 style="color:#2563EB">Frontend</h4>
+        <ul>
+          <li>Next.js 16 (App Router)</li>
+          <li>React 19</li>
+          <li>TypeScript 5</li>
+          <li>Tailwind CSS 4</li>
+          <li>Recharts (data viz)</li>
+          <li>React Hook Form + Zod</li>
+          <li>Framer Motion</li>
+          <li>Axios (HTTP client)</li>
+          <li>React Icons (HI2 set)</li>
+        </ul>
+      </div>
+      <div class="arch-sep">⟷</div>
+      <div class="arch-box backend">
+        <h4 style="color:#059669">Backend</h4>
+        <ul>
+          <li>NestJS 11 (Node.js)</li>
+          <li>TypeScript 5</li>
+          <li>TypeORM 0.3</li>
+          <li>Passport.js + JWT</li>
+          <li>bcrypt (passwords)</li>
+          <li>class-validator / transformer</li>
+          <li>cookie-parser</li>
+          <li>nodemailer</li>
+          <li>Railway (deployment)</li>
+        </ul>
+      </div>
+      <div class="arch-sep">⟷</div>
+      <div class="arch-box db">
+        <h4 style="color:#D97706">Database</h4>
+        <ul>
+          <li>PostgreSQL 15</li>
+          <li>Neon Serverless</li>
+          <li>TypeORM auto-sync</li>
+          <li>SSL enforced</li>
+          <li>Per-user data isolation</li>
+          <li>&nbsp;</li>
+          <li>&nbsp;</li>
+          <li>&nbsp;</li>
+          <li>&nbsp;</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pill-wrap" style="margin-top:16px">
+      <span class="pill">Next.js 16</span>
+      <span class="pill">React 19</span>
+      <span class="pill slate">TypeScript 5</span>
+      <span class="pill slate">Tailwind CSS 4</span>
+      <span class="pill green">NestJS 11</span>
+      <span class="pill green">TypeORM</span>
+      <span class="pill green">Passport JWT</span>
+      <span class="pill amber">PostgreSQL</span>
+      <span class="pill amber">Neon Cloud</span>
+      <span class="pill slate">Railway Deploy</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       ARCHITECTURE OVERVIEW
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">System Architecture</h2>
+    <p>
+      Savora uses a decoupled, three-tier architecture with clear separation of concerns:
+    </p>
+    <ul class="body-list">
+      <li><strong>Presentation Layer</strong> — Next.js App Router (port 3000). Each route is an independent React page using client-side data fetching via custom hooks. The sidebar and bottom-nav components handle navigation across all sections.</li>
+      <li><strong>API Layer</strong> — NestJS REST API (port 4000). Divided into 12 feature modules, each with its own controller, service, entity, and DTOs. Authentication is handled globally via a JWT Guard using HTTP-only cookies.</li>
+      <li><strong>Persistence Layer</strong> — PostgreSQL on Neon's serverless cloud. TypeORM manages schema synchronisation in development and handles relations between entities (users &rarr; expenses, users &rarr; goals, etc.).</li>
+    </ul>
+
+    <div class="card" style="margin-top:16px">
+      <div class="sub-title">Request Flow</div>
+      <pre><span class="cmt"># Browser → Next.js Frontend → NestJS API → PostgreSQL (Neon)</span>
+
+User Action  →  React Component  →  Service (Axios)  →  <span class="key">POST /expenses</span>
+                                                              ↓
+                                                    JWT Guard validates cookie
+                                                              ↓
+                                                    ExpensesService.create()
+                                                              ↓
+                                                    TypeORM INSERT → Neon PG
+                                                              ↓
+                                              <span class="val">201 Created</span> → UI update</pre>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       FEATURE OVERVIEW
+  ═══════════════════════════════════════ -->
+  <div class="section">
+    <h2 class="section-title">Feature Overview</h2>
+    <p>Savora is organised into four capability domains:</p>
+
+    <div class="sub-title">Personal Finance Core</div>
+    <div class="grid-3">
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#EFF6FF">💸</div>
+        <div class="feat-title">Expense Tracking</div>
+        <div class="feat-desc">Log expenses by category (Food, Travel, Bills, Shopping, Fun, Other), mark as essential/optional, add merchant name and notes. Full CRUD with edit and delete.</div>
+      </div>
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#ECFDF5">💵</div>
+        <div class="feat-title">Income Management</div>
+        <div class="feat-desc">Record income by source (Salary, Freelance, Investment, Other). Mark as recurring. Monthly analytics and trend tracking built in.</div>
+      </div>
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#F0FDF4">📊</div>
+        <div class="feat-title">Budget Control</div>
+        <div class="feat-desc">Set a monthly budget limit. Gauge chart shows usage. Category-level progress bars, smart tips, and monthly history. Budget alerts on dashboard at 80% and 100%.</div>
+      </div>
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#FEF3C7">🏆</div>
+        <div class="feat-title">Savings Goals</div>
+        <div class="feat-desc">Create savings goals with target amounts and optional deadlines. Deposit funds via a modal. Progress bars track completion. Dashboard widget shows top 3 goals.</div>
+      </div>
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#EDE9FE">🔄</div>
+        <div class="feat-title">Subscription Tracker</div>
+        <div class="feat-desc">Track SaaS and recurring subscriptions (monthly/yearly). Analytics show total monthly cost, active vs paused counts, most expensive services.</div>
+      </div>
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#FFF7ED">💰</div>
+        <div class="feat-title">Tax Tracker</div>
+        <div class="feat-desc">Log GST, TDS, Income Tax, Advance Tax, and other tax payments. Due-date tracking with overdue/paid/pending status. Summary view with totals by type.</div>
+      </div>
+    </div>
+
+    <div class="sub-title" style="margin-top:20px">Business &amp; Freelancer Tools</div>
+    <div class="grid-3">
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#F0F9FF">👥</div>
+        <div class="feat-title">Client CRM</div>
+        <div class="feat-desc">Manage clients with contact info, company, email, and phone. Stats card shows total clients, active count, and total billed. Billing history per client.</div>
+      </div>
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#F0FDF4">🧾</div>
+        <div class="feat-title">Invoice Management</div>
+        <div class="feat-desc">Create invoices with line items, GST calculation, and due dates. Status lifecycle: Draft → Sent → Paid / Overdue. Mark-as-paid and mark-as-sent actions on detail page.</div>
+      </div>
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#F5F3FF">📈</div>
+        <div class="feat-title">Cash Flow Statement</div>
+        <div class="feat-desc">Six-month cash flow view with area charts and monthly breakdown table. Shows opening balance, inflows, outflows, net change, and closing balance month by month.</div>
+      </div>
+    </div>
+
+    <div class="sub-title" style="margin-top:20px">Analytics &amp; Reporting</div>
+    <div class="grid-2">
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#EFF6FF">📉</div>
+        <div class="feat-title">Analytics Dashboard</div>
+        <div class="feat-desc">Weekly bar charts, monthly line charts, category pie chart, necessary vs optional spend pie, and a "spending quality" breakdown. Helps users understand where money is going at a glance.</div>
+      </div>
+      <div class="feat-card no-break">
+        <div class="feat-icon" style="background:#FFF7ED">📋</div>
+        <div class="feat-title">Full Year Reports</div>
+        <div class="feat-desc">Complete annual financial report with monthly income/expense table, cumulative cash flow chart, and category breakdown. Export-friendly layout for printing or sharing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       DASHBOARD
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Dashboard — The Command Centre</h2>
+    <p>
+      The dashboard is the landing page after login and is designed to give a full financial picture at
+      a glance. It includes:
+    </p>
+    <ul class="body-list">
+      <li><strong>Personalised greeting</strong> (Good morning/afternoon/evening, {FirstName}) with today's date</li>
+      <li><strong>4 KPI cards</strong> — Monthly Income, Monthly Expenses, Net Balance, Today's Spend</li>
+      <li><strong>Smart alert banners</strong> — budget warning at 80% / 100% usage, goal achievement celebration</li>
+      <li><strong>Cash Flow area chart</strong> — overlaid income vs expenses across all months</li>
+      <li><strong>Quick stats row</strong> — Financial Health Score (0–100), Savings Rate (%), Daily Average Spend</li>
+      <li><strong>Recent Transactions</strong> — tabbed view switching between expenses and income</li>
+      <li><strong>Monthly Budget widget</strong> — progress bar with category breakdown and remaining balance</li>
+      <li><strong>Quick Actions grid</strong> — six one-click shortcuts to key pages</li>
+      <li><strong>Savings Goals widget</strong> — top 3 goals with progress bars and inline goal creation modal</li>
+      <li><strong>Insights panel</strong> — data-driven text insights from the analytics engine</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       FRONTEND ROUTES
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Frontend Routes (15 Pages)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Route</th>
+          <th>Page Title</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="route">/</td><td>Root</td><td>Redirects to /dashboard (authenticated) or /login</td></tr>
+        <tr><td class="route">/login</td><td>Login</td><td>Email + password auth, JWT stored as HTTP-only cookie</td></tr>
+        <tr><td class="route">/signup</td><td>Signup</td><td>New account registration with name, email, password</td></tr>
+        <tr><td class="route">/dashboard</td><td>Dashboard</td><td>Main overview with KPIs, charts, transactions, goals, insights</td></tr>
+        <tr><td class="route">/expenses</td><td>Expenses</td><td>Full expense list with search, filter, delete; links to add/edit</td></tr>
+        <tr><td class="route">/expenses/add</td><td>Add Expense</td><td>Form to create a new expense entry</td></tr>
+        <tr><td class="route">/expenses/edit/[id]</td><td>Edit Expense</td><td>Pre-filled form to update existing expense</td></tr>
+        <tr><td class="route">/income</td><td>Income</td><td>Income list with add/edit/delete; recurring badge support</td></tr>
+        <tr><td class="route">/income/add</td><td>Add Income</td><td>Form to log new income entry</td></tr>
+        <tr><td class="route">/income/edit/[id]</td><td>Edit Income</td><td>Update existing income record</td></tr>
+        <tr><td class="route">/budget</td><td>Budget</td><td>Budget gauge, category bars, monthly history, smart tips</td></tr>
+        <tr><td class="route">/goals</td><td>Savings Goals</td><td>Goals CRUD, deposit modal, progress tracking, deadline countdowns</td></tr>
+        <tr><td class="route">/subscriptions</td><td>Subscriptions</td><td>Subscription list with analytics and pause/resume actions</td></tr>
+        <tr><td class="route">/analytics</td><td>Analytics</td><td>Weekly/monthly charts, category pie, spending quality breakdown</td></tr>
+        <tr><td class="route">/cashflow</td><td>Cash Flow</td><td>6-month cash flow statement with area chart and monthly table</td></tr>
+        <tr><td class="route">/clients</td><td>Clients</td><td>Client CRM — add, edit, view stats and billing history</td></tr>
+        <tr><td class="route">/invoices</td><td>Invoices</td><td>Invoice list with status badges and key stats</td></tr>
+        <tr><td class="route">/invoices/new</td><td>New Invoice</td><td>Create invoice with line items, GST, and client selection</td></tr>
+        <tr><td class="route">/invoices/[id]</td><td>Invoice Detail</td><td>View invoice, mark as sent/paid</td></tr>
+        <tr><td class="route">/tax</td><td>Tax Tracker</td><td>GST, TDS, Income Tax, Advance Tax entries with due-date status</td></tr>
+        <tr><td class="route">/reports</td><td>Reports</td><td>Full-year financial report with monthly table and charts</td></tr>
+        <tr><td class="route">/settings</td><td>Settings</td><td>Profile update, budget configuration, demo data seed/clear</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       BACKEND MODULES
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Backend Modules &amp; API Endpoints</h2>
+    <p>
+      The NestJS backend is structured into 12 independent modules, each encapsulating its own entity,
+      DTOs, service, and controller.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Base Route</th>
+          <th>Key Endpoints</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Auth</strong></td>
+          <td class="route">/auth</td>
+          <td>POST /register, POST /login, POST /logout, GET /me</td>
+        </tr>
+        <tr>
+          <td><strong>Users</strong></td>
+          <td class="route">/users</td>
+          <td>GET /profile, PATCH /profile, PATCH /password</td>
+        </tr>
+        <tr>
+          <td><strong>Expenses</strong></td>
+          <td class="route">/expenses</td>
+          <td>GET /, POST /, PATCH /:id, DELETE /:id, GET /analytics</td>
+        </tr>
+        <tr>
+          <td><strong>Income</strong></td>
+          <td class="route">/income</td>
+          <td>GET /, POST /, PATCH /:id, DELETE /:id, GET /analytics</td>
+        </tr>
+        <tr>
+          <td><strong>Budget</strong></td>
+          <td class="route">/budget</td>
+          <td>GET /, POST / (upsert), GET /summary</td>
+        </tr>
+        <tr>
+          <td><strong>Savings Goals</strong></td>
+          <td class="route">/savings-goals</td>
+          <td>GET /, POST /, PATCH /:id, DELETE /:id, POST /:id/deposit</td>
+        </tr>
+        <tr>
+          <td><strong>Subscriptions</strong></td>
+          <td class="route">/subscriptions</td>
+          <td>GET /, POST /, PATCH /:id, DELETE /:id, GET /analytics</td>
+        </tr>
+        <tr>
+          <td><strong>Clients</strong></td>
+          <td class="route">/clients</td>
+          <td>GET /, POST /, PATCH /:id, DELETE /:id, GET /stats</td>
+        </tr>
+        <tr>
+          <td><strong>Invoices</strong></td>
+          <td class="route">/invoices</td>
+          <td>GET /, POST /, PATCH /:id, DELETE /:id, PATCH /:id/status</td>
+        </tr>
+        <tr>
+          <td><strong>Tax</strong></td>
+          <td class="route">/tax</td>
+          <td>GET /, POST /, PATCH /:id, DELETE /:id, GET /summary</td>
+        </tr>
+        <tr>
+          <td><strong>Investments</strong></td>
+          <td class="route">/investments</td>
+          <td>GET /, POST /, PATCH /:id, DELETE /:id</td>
+        </tr>
+        <tr>
+          <td><strong>Seed</strong></td>
+          <td class="route">/seed</td>
+          <td>POST / (load demo data), DELETE / (clear all data)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       AUTHENTICATION
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Authentication &amp; Security</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="sub-title" style="margin-top:0">JWT + HTTP-only Cookies</div>
+        <p style="font-size:12.5px">
+          On login, the server issues a signed JWT stored in an HTTP-only cookie. This prevents
+          XSS-based token theft. The frontend never touches the token directly — all subsequent
+          requests automatically include the cookie, and NestJS validates it via a global JWT Guard.
+        </p>
+        <ul class="body-list" style="font-size:12px">
+          <li>Passwords hashed with bcrypt (10 rounds)</li>
+          <li>JWT signed with secret from environment variable</li>
+          <li>CORS restricted to allowed frontend origin</li>
+          <li>class-validator enforces all request DTOs</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="sub-title" style="margin-top:0">Env Configuration</div>
+        <pre style="font-size:11px; background:#1e293b; margin-top:6px"><span class="cmt"># backend/.env</span>
+<span class="key">DATABASE_URL</span>=<span class="str">postgresql://user:pass@neon.../db</span>
+<span class="key">JWT_SECRET</span>=<span class="str">your-secret-key</span>
+<span class="key">PORT</span>=<span class="val">4000</span>
+<span class="key">NODE_ENV</span>=<span class="str">development</span>
+<span class="key">FRONTEND_URL</span>=<span class="str">http://localhost:3000</span>
+
+<span class="cmt"># frontend/.env.local</span>
+<span class="key">NEXT_PUBLIC_API_URL</span>=<span class="str">http://localhost:4000</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       UI / DESIGN SYSTEM
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">UI &amp; Design System</h2>
+    <p>
+      Savora uses a consistent, professional visual language throughout — no dark mode, no emojis in UI,
+      clean white cards with subtle shadows, and a single-brand blue as the primary accent.
+    </p>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#2563EB">Primary Blue<br/><span style="font-weight:400;font-size:11px">#2563EB</span></div>
+      <div class="swatch" style="background:#059669">Success Green<br/><span style="font-weight:400;font-size:11px">#059669</span></div>
+      <div class="swatch" style="background:#DC2626">Danger Red<br/><span style="font-weight:400;font-size:11px">#DC2626</span></div>
+      <div class="swatch" style="background:#D97706">Warning Amber<br/><span style="font-weight:400;font-size:11px">#D97706</span></div>
+      <div class="swatch" style="background:#0F172A; font-size:11px">Text / Slate 900<br/><span style="font-weight:400">#0F172A</span></div>
+    </div>
+    <ul class="body-list" style="margin-top:14px">
+      <li><strong>Typography:</strong> Segoe UI / system-ui stack for crisp native rendering</li>
+      <li><strong>Cards:</strong> White background, 1px #E2E8F0 border, 10px border-radius, subtle box-shadow</li>
+      <li><strong>Charts:</strong> Recharts — Area, Bar, Line, Pie. Custom tooltips styled to match the card theme</li>
+      <li><strong>Layout:</strong> Sidebar navigation (desktop) + Bottom nav (mobile). Max content width 1400px</li>
+      <li><strong>Animations:</strong> Framer Motion for modals and page transitions; CSS transitions for hover states</li>
+      <li><strong>Forms:</strong> React Hook Form + Zod validation for type-safe, accessible form handling</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       DEMO DATA
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Demo Data System</h2>
+    <p>
+      The Seed module allows any user to instantly populate their account with realistic demo data at
+      the click of a button in Settings. This is useful for college presentations and demonstrations.
+    </p>
+    <div class="card" style="padding:16px 20px">
+      <div class="demo-item">
+        <div class="demo-icon">📅</div>
+        <div class="demo-text">
+          <b>6 months of Expenses &amp; Income</b>
+          <span>Across all categories — Food, Travel, Bills, Shopping, Fun, Other for expenses; Salary, Freelance, Investment for income</span>
+        </div>
+      </div>
+      <div class="demo-item">
+        <div class="demo-icon">🏆</div>
+        <div class="demo-text">
+          <b>5 Savings Goals</b>
+          <span>Emergency Fund, New Laptop, Vacation, Home Down Payment, Car — at various completion percentages (10%–95%)</span>
+        </div>
+      </div>
+      <div class="demo-item">
+        <div class="demo-icon">🔄</div>
+        <div class="demo-text">
+          <b>8 Subscriptions</b>
+          <span>AWS, GitHub, Figma, Notion, Slack, Adobe Creative Cloud, Zoom, Linear — mix of monthly and yearly billing</span>
+        </div>
+      </div>
+      <div class="demo-item">
+        <div class="demo-icon">👥</div>
+        <div class="demo-text">
+          <b>5 Clients</b>
+          <span>Arjun Mehta, Priya Sharma, Rohit Bansal, Ananya Iyer, Vikram Singh — with company names and contact details</span>
+        </div>
+      </div>
+      <div class="demo-item">
+        <div class="demo-icon">🧾</div>
+        <div class="demo-text">
+          <b>5 Invoices</b>
+          <span>Across all statuses — Paid, Sent, Overdue, Draft — linked to demo clients with GST line items</span>
+        </div>
+      </div>
+      <div class="demo-item" style="border-bottom:none">
+        <div class="demo-icon">🏛️</div>
+        <div class="demo-text">
+          <b>6 Tax Entries</b>
+          <span>GST, TDS, Income Tax (Q1–Q4), Advance Tax, Property Tax — with varied due dates and payment statuses</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       HOW TO RUN
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">How to Run the Project</h2>
+    <div class="grid-2">
+      <div>
+        <div class="sub-title">Prerequisites</div>
+        <ul class="body-list" style="font-size:12.5px">
+          <li>Node.js 18 or higher</li>
+          <li>npm 9+</li>
+          <li>PostgreSQL database (local or Neon cloud URL)</li>
+          <li>Environment files configured (see above)</li>
+        </ul>
+        <div class="sub-title" style="margin-top:16px">One-click Setup (Windows)</div>
+        <pre style="font-size:11.5px"><span class="cmt"># Run the included setup script</span>
+<span class="key">setup.bat</span></pre>
+      </div>
+      <div>
+        <div class="sub-title">Manual Start</div>
+        <pre style="font-size:11.5px"><span class="cmt"># Terminal 1 — Backend</span>
+<span class="key">cd</span> backend
+<span class="key">npm</span> install
+<span class="key">npm</span> run start:dev
+<span class="cmt"># → http://localhost:4000</span>
+
+<span class="cmt"># Terminal 2 — Frontend</span>
+<span class="key">cd</span> frontend
+<span class="key">npm</span> install
+<span class="key">npm</span> run dev
+<span class="cmt"># → http://localhost:3000</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       DEPLOYMENT
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Deployment &amp; Cloud Infrastructure</h2>
+    <div class="grid-2">
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#ECFDF5">🚂</div>
+        <div class="feat-title">Railway (Backend)</div>
+        <div class="feat-desc">
+          The NestJS backend is configured for Railway deployment via <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">railway.json</code>.
+          Railway reads the <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">DATABASE_URL</code> env var and
+          automatically provisions the Node.js runtime. The dist folder is built and served with
+          <code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">npm run start:prod</code>.
+        </div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#EFF6FF">☁️</div>
+        <div class="feat-title">Neon (Database)</div>
+        <div class="feat-desc">
+          PostgreSQL is hosted on Neon's serverless platform, providing automatic scaling, branching,
+          and a connection pooler. SSL is enforced (<code style="font-size:11px;background:#f1f5f9;padding:1px 5px;border-radius:4px">rejectUnauthorized: false</code>
+          for cloud compatibility). Schema is auto-synchronised in non-production environments.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PROJECT CONTEXT
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Project Context &amp; Motivation</h2>
+    <p>
+      Savora was developed as a college capstone project by Rishabh Joshi. The project began as a
+      basic expense tracker ("FinTrack") and evolved through several iterations into a full-fledged
+      personal finance and business management platform, re-branded as <strong>Savora</strong>.
+    </p>
+    <p>
+      The driving goal was to build something genuinely useful — not just a demo app — that could serve
+      both students tracking personal budgets and freelancers managing their business finances. The
+      scope was intentionally ambitious: rather than covering one financial domain deeply, Savora
+      covers the full financial lifecycle of an individual professional.
+    </p>
+    <ul class="body-list">
+      <li>A Savora project synopsis was submitted as part of the college project proposal</li>
+      <li>The design deliberately avoids dark mode and emojis to maintain a professional, business-grade aesthetic</li>
+      <li>Demo data seeding was added specifically to make college presentations smooth and compelling</li>
+      <li>Indian financial context (GST, TDS, INR currency formatting) is built in throughout the tax and invoice modules</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       DIRECTORY STRUCTURE
+  ═══════════════════════════════════════ -->
+  <div class="section no-break">
+    <h2 class="section-title">Directory Structure</h2>
+    <div class="grid-2">
+      <div>
+        <div class="sub-title">Frontend (src/)</div>
+        <pre style="font-size:11px"><span class="key">app/</span>
+  <span class="val">(main)/</span>          <span class="cmt">← protected route group</span>
+    dashboard/page.tsx
+    expenses/page.tsx
+    income/page.tsx
+    budget/page.tsx
+    goals/page.tsx
+    subscriptions/page.tsx
+    tax/page.tsx
+    clients/page.tsx
+    invoices/page.tsx
+    analytics/page.tsx
+    cashflow/page.tsx
+    reports/page.tsx
+    settings/page.tsx
+  login/page.tsx
+  signup/page.tsx
+<span class="key">components/</span>
+  charts/       <span class="cmt">← recharts wrappers</span>
+  dashboard/    <span class="cmt">← dashboard widgets</span>
+  layout/       <span class="cmt">← Sidebar, BottomNav</span>
+  ui/           <span class="cmt">← Skeleton, EmptyState</span>
+<span class="key">hooks/</span>
+  useAuth, useExpenses, useIncome, useBudget
+<span class="key">services/</span>    <span class="cmt">← Axios API calls (one per module)</span>
+<span class="key">types/</span>       <span class="cmt">← TypeScript interfaces</span>
+<span class="key">utils/</span>       <span class="cmt">← formatCurrency, dateHelpers</span></pre>
+      </div>
+      <div>
+        <div class="sub-title">Backend (src/)</div>
+        <pre style="font-size:11px"><span class="key">auth/</span>          <span class="cmt">← JWT strategy, guards, DTOs</span>
+<span class="key">users/</span>         <span class="cmt">← User entity + profile</span>
+<span class="key">expenses/</span>      <span class="cmt">← Expense entity + analytics</span>
+<span class="key">income/</span>        <span class="cmt">← Income entity + analytics</span>
+<span class="key">budget/</span>        <span class="cmt">← Budget entity + summary</span>
+<span class="key">savings-goals/</span> <span class="cmt">← Goal entity + deposits</span>
+<span class="key">subscriptions/</span> <span class="cmt">← Sub entity + analytics</span>
+<span class="key">clients/</span>       <span class="cmt">← Client entity + stats</span>
+<span class="key">invoices/</span>      <span class="cmt">← Invoice + line items + GST</span>
+<span class="key">tax/</span>           <span class="cmt">← Tax entry + summary</span>
+<span class="key">investments/</span>   <span class="cmt">← Investment entity</span>
+<span class="key">seed/</span>          <span class="cmt">← Demo data loader</span>
+<span class="val">app.module.ts</span>  <span class="cmt">← Root NestJS module</span>
+<span class="val">main.ts</span>        <span class="cmt">← Bootstrap, CORS, port 4000</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <div class="footer">
+    <div>
+      <b>Savora</b> — Personal Finance &amp; Business Management Platform<br/>
+      Developed by <b>Rishabh Joshi</b> &nbsp;·&nbsp; College Capstone Project &nbsp;·&nbsp; 2025–2026
+    </div>
+    <div style="text-align:right">
+      Stack: NestJS · Next.js · PostgreSQL<br/>
+      Generated: April 21, 2026
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
